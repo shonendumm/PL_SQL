@@ -10,3 +10,52 @@ BEGIN
     VALUES ('CUSTOMER', V_USERNAME, SYSDATE, 'BEFORE_UPDATE_OPERATION');
 
 END;
+
+/
+
+SELECT * FROM AUDIT_TABLE;
+SELECT * FROM CUSTOMER;
+/
+
+UPDATE CUSTOMER
+SET FIRST_NAME = 'PETER A'
+WHERE FIRST_NAME = 'PETER';
+COMMIT; -- if no commit statement, changes are only apparent now, not permanent after disconnecting.
+
+/
+
+CREATE OR REPLACE TRIGGER CUSTOMER_AFTER_EVENT
+    AFTER UPDATE OR INSERT OR DELETE
+    ON CUSTOMER
+DECLARE
+    V_USERNAME VARCHAR2(100);
+BEGIN
+    SELECT USER INTO V_USERNAME FROM DUAL;
+    
+    IF UPDATING THEN
+        INSERT INTO audit_table (table_name, userid, operation_date, operation)
+        VALUES ('CUSTOMER', V_USERNAME, SYSDATE, 'UPDATE_OPERATION');
+    ELSIF INSERTING THEN
+        INSERT INTO audit_table (table_name, userid, operation_date, operation)
+        VALUES ('CUSTOMER', V_USERNAME, SYSDATE, 'INSERT_OPERATION');
+    ELSIF DELETING THEN
+        INSERT INTO audit_table (table_name, userid, operation_date, operation)
+        VALUES ('CUSTOMER', V_USERNAME, SYSDATE, 'DELETE_OPERATION');
+    END IF;
+    
+END;
+/
+
+
+INSERT INTO CUSTOMER
+VALUES('14', 'MARIO', 'COSTELLO','A','Orchard Road', '', 'Tokyo', 'Japan', sysdate, 'East');
+COMMIT;
+/
+
+DELETE FROM CUSTOMER
+WHERE first_name = 'MARIO';
+COMMIT;
+
+
+
+
