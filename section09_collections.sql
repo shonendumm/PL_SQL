@@ -1,6 +1,6 @@
 -- Collections
 
--- Index by tables / Associative Array
+-- Index by tables / Associative Array, like a dictionary
 -- Indexed by numbers, strings
 -- Cannot be stored in database
 -- values can be inserted at any integer / sparse table

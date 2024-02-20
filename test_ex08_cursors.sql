@@ -18,11 +18,25 @@ BEGIN
     LOOP
         FETCH cur into s_row;
         EXIT WHEN CUR%NOTFOUND;
-        
         dbms_output.put_line(s_row.sales_date);
+    
     END LOOP;
     
     CLOSE cur;
+    
+--  Another method of fetching cursor
+--    OPEN cur;
+--    FETCH cur into s_row;
+--    
+--    WHILE CUR%FOUND LOOP
+--
+--        dbms_output.put_line(s_row.sales_date);
+--        
+--        FETCH cur into s_row;
+--    
+--    END LOOP;
+--    
+--    CLOSE cur;
 
 
 END FETCH_SALES;

@@ -28,7 +28,6 @@ order by operation_date;
 /
 
 -- OLD and NEW pseudo records WITH CONDITIONAL WHEN
-
 CREATE OR REPLACE TRIGGER CUSTOMER_UPDATE_VALUES
     AFTER UPDATE
         ON CUSTOMER
